@@ -46,7 +46,7 @@
         </thead>
         <tbody>
         <tr v-for="(item) in selectedGroceryList.itemList" :key="item.id">
-          <td>{{ item.name }}</td>
+          <td>{{item.name }}</td>
           <td>{{item.category}}</td>
           <td>{{item.quantity}}</td>
           <td>
@@ -66,7 +66,7 @@
           <input type="text" class="form-control" v-model="newItem.category" required>
         </div>
         <div class="form-group">
-          <label for="itemQuantity">Quantity:</label>
+          <label for="newItemQuantity">Quantity:</label>
           <input type="number" class="form-control" v-model="newItem.quantity" required>
         </div>
         <button type="submit" class="btn btn-primary">Add</button>
@@ -88,7 +88,7 @@ export default {
       newItem: {
         name: '',
         category: '',
-        quantity: 0
+        quantity: ''
       },
 
     };
@@ -117,20 +117,23 @@ export default {
       })
           .then(response => response.json())
           .then(data => {
-            this.groceryLists.push(data);
+            this.newGroceryList.itemList.push(data);
             this.newGroceryList.title = '';
             this.newGroceryList.itemList = [];
+            this.fetchGroceryLists();
           })
           .catch(error => {
             console.error('Error:', error);
           });
+
     },
     showGroceryList(id) {
       fetch(`http://localhost:8080/api/groceryList/${id}`)
           .then(response => response.json())
           .then(data => {
-            console.log(data);
             this.selectedGroceryList = data;
+            this.newItem.quantity = '';
+            this.fetchGroceryLists();
           })
           .catch(error => {
             console.error('Error:', error);
@@ -159,13 +162,18 @@ export default {
           .then(response => response.json())
           .then(data => {
             console.log(data);
-            this.selectedGroceryList.itemList= data;
+            this.selectedGroceryList.itemList.push(data);
             this.newItem.name = '';
             this.newItem.category = '';
+            this.newItem.quantity = '';
+          })
+          .then(() => {
+            this.fetchGroceryLists();
           })
           .catch(error => {
             console.error('Error:', error);
           });
+
     },
     updateItem(item) {
       fetch(`http://localhost:8080/api/item/${item.id}`, {
@@ -180,11 +188,11 @@ export default {
           });
     },
     deleteItem(item,id) {
-      fetch(`http://localhost:8080/api/groceryList/${this.selectedGroceryList.id}/item/${item.id}`, {
+      fetch(`http://localhost:8080/api/item/${item.id}`, {
         method: 'DELETE'
       })
           .then(() => {
-            this.selectedGroceryList.item = this.selectedGroceryList.item.filter(item => item.id !== id);
+            this.newItem = this.newItem.filter(item => item.id !== id);
           })
           .catch(error => {
             console.error('Error:', error);
