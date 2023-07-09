@@ -46,9 +46,9 @@
         </thead>
         <tbody>
         <tr v-for="(item) in selectedGroceryList.itemList" :key="item.id">
-          <td>{{item.name }}</td>
-          <td>{{item.category}}</td>
-          <td>{{item.quantity}}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.category }}</td>
+          <td>{{ item.quantity }}</td>
           <td>
             <button @click="deleteItem(item.id)" class="btn btn-danger">Delete</button>
           </td>
@@ -74,7 +74,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   data() {
@@ -202,8 +201,38 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .container {
   margin-top: 40px;
+  background-color: #333;
+  color: #fff;
+}
+
+h1, h2, h3 {
+  color: #fff;
+}
+
+.table {
+  background-color: #444;
+}
+
+.btn-primary {
+  background-color: #555;
+  border-color: #555;
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  border-color: #d9534f;
+}
+
+.form-control {
+  background-color: #555;
+  color: #fff;
+}
+
+label {
+  color: #fff;
 }
 </style>
